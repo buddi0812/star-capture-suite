@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -57,6 +58,30 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Professional Camera UI Colors
+        control: {
+          bg: "var(--control-bg)",
+          border: "var(--control-border)",
+          active: "var(--control-active)",
+        },
+        // Night Mode
+        night: {
+          red: "hsl(var(--night-red))",
+          "red-dim": "hsl(var(--night-red-dim))",
+          background: "hsl(var(--night-background))",
+        },
+        // Focus & Exposure Aids
+        zebra: "var(--zebra-color)",
+        histogram: {
+          red: "var(--histogram-red)",
+          green: "var(--histogram-green)",
+          blue: "var(--histogram-blue)",
+        },
+      },
+      backgroundImage: {
+        "gradient-space": "var(--gradient-space)",
+        "gradient-nebula": "var(--gradient-nebula)",
+        "gradient-red": "var(--gradient-red)",
       },
       borderRadius: {
         lg: "var(--radius)",
