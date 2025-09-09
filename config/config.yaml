@@ -1,0 +1,107 @@
+# Astrophotography Camera Configuration
+
+# Data storage
+data_path: "/data"
+log_level: "INFO"
+
+# Camera settings
+camera:
+  # Default capture settings
+  default_gain: 1.0
+  default_shutter_us: 1000000  # 1 second
+  max_exposure_us: 600000000   # 10 minutes
+  
+  # Preview settings
+  preview_fps: 10
+  preview_quality: 80
+  preview_size: [640, 480]
+  
+  # High-resolution settings
+  still_size: [4056, 3040]
+  video_size: [1920, 1080]
+  
+  # Focus settings
+  focus_roi_size: [200, 200]  # Default ROI size for focus measurement
+
+# Network settings
+network:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins: ["*"]
+  
+  # WebSocket settings
+  websocket_ping_interval: 20
+  websocket_ping_timeout: 10
+
+# Storage management
+storage:
+  min_free_gb: 1.0
+  auto_cleanup: false
+  cleanup_days: 30
+  
+  # Thumbnail settings
+  thumbnail_cache_size_mb: 500
+  thumbnail_quality: 85
+
+# Security
+security:
+  # In production, set a strong password
+  admin_password: "astrocam123"
+  session_timeout_hours: 24
+  
+  # Rate limiting
+  max_requests_per_minute: 60
+  max_concurrent_sequences: 3
+
+# Hardware-specific settings
+hardware:
+  # Raspberry Pi specific
+  enable_cpu_temp_monitoring: true
+  enable_voltage_monitoring: true
+  
+  # Camera module
+  camera_module: "imx477"  # HQ Camera
+  
+  # Optional hardware
+  has_cooling_fan: false
+  has_dew_heater: false
+  has_focuser: false
+
+# Capture presets
+presets:
+  # Common astrophotography targets
+  milky_way:
+    shutter_us: 20000000    # 20 seconds
+    gain: 8.0
+    format: "jpeg+dng"
+    
+  deep_sky:
+    shutter_us: 300000000   # 5 minutes
+    gain: 4.0
+    format: "jpeg+dng"
+    
+  planetary:
+    shutter_us: 100000      # 0.1 second
+    gain: 1.0
+    format: "jpeg"
+    
+  moon:
+    shutter_us: 10000       # 0.01 second
+    gain: 1.0
+    format: "jpeg+dng"
+
+# Advanced features
+advanced:
+  # Enable experimental features
+  enable_raw_burst: true
+  enable_log_flat_video: true
+  enable_focus_stacking: false
+  
+  # Processing
+  auto_stretch_previews: true
+  generate_quicklook_stacks: true
+  
+  # Field mode
+  wifi_ap_mode: false
+  ap_ssid: "AstroCam"
+  ap_password: "stargazer"

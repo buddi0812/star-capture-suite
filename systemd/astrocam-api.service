@@ -1,0 +1,32 @@
+[Unit]
+Description=Astrophotography Camera API Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=exec
+User=astrocam
+Group=astrocam
+WorkingDirectory=/opt/astrocam
+Environment=PATH=/opt/astrocam/venv/bin
+Environment=PYTHONPATH=/opt/astrocam
+ExecStart=/opt/astrocam/venv/bin/python main.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=astrocam-api
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/data /var/log/astrocam /tmp
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=1G
+
+[Install]
+WantedBy=multi-user.target

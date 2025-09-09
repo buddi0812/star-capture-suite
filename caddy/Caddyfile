@@ -1,0 +1,76 @@
+# Astrophotography Camera Caddy Configuration
+{
+    # Global options
+    auto_https off
+    admin off
+}
+
+# Main HTTPS site
+:8443 {
+    # TLS with self-signed certificate for LAN use
+    tls internal
+
+    # Security headers
+    header {
+        # HSTS
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        # XSS Protection
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        # CSP for astrophotography app
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; font-src 'self'"
+    }
+
+    # Frontend (React/Svelte SPA)
+    handle /* {
+        root * /opt/astrocam/static
+        try_files {path} /index.html
+        file_server
+    }
+
+    # API routes
+    handle /api/* {
+        reverse_proxy 127.0.0.1:8000 {
+            # WebSocket support for telemetry
+            header_up Host {upstream_hostport}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # WebSocket endpoint
+    handle /ws/* {
+        reverse_proxy 127.0.0.1:8000 {
+            header_up Host {upstream_hostport}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/astrocam.log {
+            roll_size 10MB
+            roll_keep 5
+        }
+        format json
+        level INFO
+    }
+
+    # Error handling
+    handle_errors {
+        @404 expression {http.error.status_code} == 404
+        handle @404 {
+            rewrite * /index.html
+            file_server
+        }
+    }
+}
+
+# HTTP redirect to HTTPS
+:8080 {
+    redir https://{host}:8443{uri} permanent
+}

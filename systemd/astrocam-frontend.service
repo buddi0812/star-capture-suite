@@ -1,0 +1,26 @@
+[Unit]
+Description=Astrophotography Camera Frontend Service
+After=network.target astrocam-api.service
+Wants=network.target
+Requires=astrocam-api.service
+
+[Service]
+Type=exec
+User=astrocam
+Group=astrocam
+WorkingDirectory=/opt/astrocam/static
+ExecStart=/usr/bin/python3 -m http.server 3000 --bind 127.0.0.1
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=astrocam-frontend
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
